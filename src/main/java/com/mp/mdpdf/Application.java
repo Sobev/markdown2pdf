@@ -2,6 +2,7 @@ package com.mp.mdpdf;
 
 import com.mp.mdpdf.exception.ConversionException;
 import com.mp.mdpdf.htmltopdf.HtmlPdfConverter;
+import com.mp.mdpdf.htmltopdf.WaterMarkerGenerator;
 import com.mp.mdpdf.mdtohtml.AtlassianMd2HtmlConverter;
 
 import java.io.*;
@@ -28,8 +29,9 @@ public class Application {
         }
     }
     public static void main(String[] args) throws ConversionException, IOException {
-        File mdFile = new File("D:\\App\\typora\\oppf\\aksk\\AKSK.md");
-//        File mdFile = new File("D:\\App\\typora\\easy-api.md");
+//        File mdFile = new File("D:\\App\\typora\\oppf\\aksk\\AKSK.md");
+//        File mdFile = new File("D:\\App\\typora\\rust\\rust-http-server.md");
+        File mdFile = new File("D:\\App\\typora\\easy-api.md");
         StringBuilder sb = new StringBuilder();
         InputStream in = new FileInputStream(mdFile);
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -48,7 +50,7 @@ public class Application {
         FileOutputStream outputStream = new FileOutputStream(file);
 //        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         
-        HtmlPdfConverter.writeStringToOutputStreamAsPDF(html, outputStream);
+        HtmlPdfConverter.writeStringToOutputStreamAsPDF(html, outputStream, new WaterMarkerGenerator("1e587116-067d-4c9c-a9e3-3dd5c102f77b"));
 //        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
 //        byte[] buf = new byte[4096];
 //        int len;

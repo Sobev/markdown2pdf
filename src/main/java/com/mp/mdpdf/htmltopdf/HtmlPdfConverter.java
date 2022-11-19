@@ -8,7 +8,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerFontProvider;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 /**
@@ -17,14 +19,17 @@ import java.nio.charset.Charset;
  */
 public class HtmlPdfConverter {
 
-    public static void writeStringToOutputStreamAsPDF(String html, OutputStream os) {
-        writeToOutputStreamAsPDF(new ByteArrayInputStream(html.getBytes()), os);
+    public static void writeStringToOutputStreamAsPDF(String html, OutputStream os, WaterMarkerGenerator watermark) {
+        writeToOutputStreamAsPDF(new ByteArrayInputStream(html.getBytes()), os, watermark);
     }
 
-    public static void writeToOutputStreamAsPDF(InputStream html, OutputStream os) {
+    public static void writeToOutputStreamAsPDF(InputStream html, OutputStream os, WaterMarkerGenerator watermark) {
         try {
             Document document = new Document(PageSize.A4);
             PdfWriter pdfWriter = PdfWriter.getInstance(document, os);
+            if(watermark != null) {
+                pdfWriter.setPageEvent(watermark);
+            }
             document.open();
             XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
             worker.parseXHtml(pdfWriter, document, html, Charset.forName("UTF-8"), new AsianFontProvider());
