@@ -42,8 +42,8 @@ class AsianFontProvider extends XMLWorkerFontProvider {
     public Font getFont(final String fontName, String encoding, float size, final int style) {
         try {
 //            BaseFont font = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
-            BaseFont font = BaseFont.createFont("font/MapleMono-SC-NF-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-//            BaseFont font = BaseFont.createFont("font/simfang.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+//            BaseFont font = BaseFont.createFont("font/MapleMono-SC-NF-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            BaseFont font = BaseFont.createFont("font/simfang.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             return new Font(font, size, style);
         } catch (Exception e) {
         }

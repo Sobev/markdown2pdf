@@ -300,7 +300,7 @@ body {
 }
 
 pre {
-    background-color: #f8f8f8;
+    background-color: #ffffff;
     border: 1px solid #cccccc;
     border-radius: 3px;
     overflow-x: auto;
@@ -337,8 +337,4 @@ code {
 -------------------------------------------------------- */
 .page {
     page-break-after: always;
-}
-
-.markdown-body {
-    color: #444444;
 }
