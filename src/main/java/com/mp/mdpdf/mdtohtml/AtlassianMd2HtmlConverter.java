@@ -3,16 +3,20 @@ package com.mp.mdpdf.mdtohtml;
 import org.commonmark.Extension;
 import org.commonmark.ext.gfm.tables.TableBlock;
 import org.commonmark.ext.gfm.tables.TablesExtension;
-import org.commonmark.node.Code;
+import org.commonmark.node.IndentedCodeBlock;
 import org.commonmark.node.Link;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
+import org.commonmark.renderer.NodeRenderer;
 import org.commonmark.renderer.html.AttributeProvider;
+import org.commonmark.renderer.html.HtmlNodeRendererContext;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.commonmark.renderer.html.HtmlWriter;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author luojx
@@ -51,8 +55,8 @@ public class AtlassianMd2HtmlConverter {
         Node document = parser.parse(markdown);
         HtmlRenderer renderer = HtmlRenderer.builder()
 //                .extensions(headingAnchorExtensions)
+                .nodeRendererFactory(context -> new IndentedCodeBlockNodeRenderer(context))
                 .extensions(tableExtension)
-                .softbreak("<br>")
                 .attributeProviderFactory(context -> new CustomAttributeProvider())
                 .build();
         return renderer.render(document);
@@ -68,16 +72,40 @@ public class AtlassianMd2HtmlConverter {
             if (node instanceof Link) {
                 attributes.put("target", "_blank");
             }
-            if (node instanceof Code) {
-                attributes.put("class", "hljs");
-            }
             if (node instanceof TableBlock) {
                 attributes.put("class", "ui celled table");
             }
             if (tagName.equals("pre")) {
-                System.out.println("putting hljs");
-                attributes.put("class", "hljs");
+                attributes.put("class", "markdown-body");
             }
+            attributes.put("class", "markdown-body");
+        }
+    }
+
+    static class IndentedCodeBlockNodeRenderer implements NodeRenderer {
+
+        private final HtmlWriter html;
+
+        IndentedCodeBlockNodeRenderer(HtmlNodeRendererContext context) {
+            this.html = context.getWriter();
+        }
+
+        @Override
+        public Set<Class<? extends Node>> getNodeTypes() {
+            // Return the node types we want to use this renderer for.
+            return Collections.<Class<? extends Node>>singleton(IndentedCodeBlock.class);
+        }
+
+        @Override
+        public void render(Node node) {
+            // We only handle one type as per getNodeTypes, so we can just cast it here.
+            IndentedCodeBlock codeBlock = (IndentedCodeBlock) node;
+            System.out.println("indented code block node renderer");
+            html.line();
+            html.tag("span class=\"hljs-string\"");
+            html.text(codeBlock.getLiteral());
+            html.tag("/span");
+            html.line();
         }
     }
 
