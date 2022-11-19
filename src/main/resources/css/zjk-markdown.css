@@ -118,7 +118,8 @@ pre > code {
     margin: 0;
     overflow: initial;
     line-height: 1.6em;
-    font-size: .95em;
+    font-size: 1.1em;
+    font-weight: bold;
     white-space: pre;
     background: 0 0;
 
