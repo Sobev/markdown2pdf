@@ -14,6 +14,7 @@ import java.io.*;
 public class Application {
     private static final String CSS_PATH = "D:\\Sobev\\mdpdf\\src\\main\\resources\\css\\zjk-markdown.css";
     private static final StringBuilder CSS_CONTENT = new StringBuilder();
+
     static {
         File cssFile = new File(CSS_PATH);
         try {
@@ -26,16 +27,38 @@ public class Application {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) throws ConversionException, IOException {
         File mdFile = new File("D:\\App\\typora\\easy-api.md");
         StringBuilder sb = new StringBuilder();
         InputStream in = new FileInputStream(mdFile);
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String line;
+        int codeBlockSize = 0;
+        Stack<String> stack = new Stack<>();
         while ((line = br.readLine()) != null) {
+            if (line.startsWith("```")) {
+                codeBlockSize++;
+                if(stack.size() > 0) {
+                    sb.append("</pre></code>" + System.lineSeparator());
+                    stack.pop();
+                    continue;
+                }
+                stack.push(line);
+                sb.append("<code><pre>" + System.lineSeparator());
+                continue;
+            }
             sb.append(line + System.lineSeparator());
+            if(stack.size() > 0) {
+                sb.append("<br></br>");
+            }
+            System.out.println(line);
         }
         
+        if(codeBlockSize % 2 != 0) {
+            throw new ConversionException("markdown代码块异常 非代码块的行开头不能为 \"```\" ;)");
+        }
+
         String html = AtlassianMd2HtmlConverter.markdownToHtmlExtensions(sb.toString());
         html  = "<style type=\"text/css\">\n" + CSS_CONTENT + "\n</style>\n" + html;
         File file = new File("D:\\Sobev\\mdpdf\\src\\main\\resources\\pdf\\xx.pdf");
