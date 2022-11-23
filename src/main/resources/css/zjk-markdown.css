@@ -107,7 +107,8 @@ pre {
     overflow: auto;
     padding: 6px 10px;
     border-left: 5px solid #6CE26C;
-    font-size: 1.5em;
+    font-size: 0.9em;
+    white-space: pre-wrap;
 }
 
 pre > code {
@@ -119,7 +120,7 @@ pre > code {
     margin: 0;
     overflow: initial;
     line-height: 1.6em;
-    font-size: 1.1em;
+    font-size: 0.9em;
     font-weight: bold;
     white-space: pre;
     background: 0 0;
@@ -127,6 +128,10 @@ pre > code {
 }
 
 code {
+    color: #011e5e;
+}
+
+pre {
     color: #011e5e;
 }
 

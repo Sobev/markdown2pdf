@@ -20,6 +20,9 @@ import java.nio.charset.Charset;
 public class HtmlPdfConverter {
 
     public static void writeStringToOutputStreamAsPDF(String html, OutputStream os, WaterMarkerGenerator watermark) {
+        //trying 🤔
+        html = html.replaceAll("\\<code(.*?)\\>", "");
+        html = html.replaceAll("\\</code\\>", "");
         writeToOutputStreamAsPDF(new ByteArrayInputStream(html.getBytes()), os, watermark);
     }
 
