@@ -6,9 +6,6 @@ import com.mp.mdpdf.htmltopdf.WaterMarkerGenerator;
 import com.mp.mdpdf.mdtohtml.AtlassianMd2HtmlConverter;
 
 import java.io.*;
-import java.util.List;
-import java.util.Stack;
-import java.util.stream.Collectors;
 
 /**
  * @author luojx
@@ -32,45 +29,29 @@ public class Application {
     }
 
     public static void main(String[] args) throws ConversionException, IOException {
-        File mdFile = new File("D:\\App\\typora\\easy-api.md");
+//        File mdFile = new File("D:\\App\\typora\\oppf\\aksk\\AKSK.md");
+//        File mdFile = new File("D:\\App\\typora\\rust\\rust-http-server.md");
+        File mdFile = new File("D:\\App\\typora\\rust\\rust-thread-pool.md");
         StringBuilder sb = new StringBuilder();
         InputStream in = new FileInputStream(mdFile);
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String line;
-        int codeBlockSize = 0;
-        Stack<String> stack = new Stack<>();
         while ((line = br.readLine()) != null) {
-            if (line.startsWith("```")) {
-                codeBlockSize++;
-                if(stack.size() > 0) {
-                    sb.append("</pre></code>" + System.lineSeparator());
-                    stack.pop();
-                    continue;
-                }
-                stack.push(line);
-                sb.append("<code><pre>" + System.lineSeparator());
-                continue;
-            }
             sb.append(line + System.lineSeparator());
-            if(stack.size() > 0) {
-                sb.append("<br></br>");
-            }
-            System.out.println(line);
-        }
-        
-        if(codeBlockSize % 2 != 0) {
-            throw new ConversionException("markdown代码块异常 非代码块的行开头不能为 \"```\" ;)");
         }
 
         String html = AtlassianMd2HtmlConverter.markdownToHtmlExtensions(sb.toString());
-        html  = "<style type=\"text/css\">\n" + CSS_CONTENT + "\n</style>\n" + html;
+        System.out.println("html = " + html);
+        html = "<style type=\"text/css\">\n" + CSS_CONTENT + "\n</style>\n" + html;
+        //TODO: template返回html
         File file = new File("D:\\Sobev\\mdpdf\\src\\main\\resources\\pdf\\xx.pdf");
         if (!file.exists()) {
             file.createNewFile();
         }
         FileOutputStream outputStream = new FileOutputStream(file);
         
-        HtmlPdfConverter.writeStringToOutputStreamAsPDF(html, outputStream, new WaterMarkerGenerator("1e587116-067d-4c9c-a9e3-3dd5c102f77b"));
+        HtmlPdfConverter.writeStringToOutputStreamAsPDF(html, outputStream, new WaterMarkerGenerator("5Y2V5Y+M5LyR6I2J5rOl6ams"));
+        in.close();
         outputStream.close();
     }
 }

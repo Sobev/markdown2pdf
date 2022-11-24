@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.itextpdf.tool</groupId>
             <artifactId>xmlworker</artifactId>
-            <version>5.5.11</version>
+            <version>5.5.13.3</version>
         </dependency>
         <!--引入Markdown转HTML的插件-->
         <dependency>
